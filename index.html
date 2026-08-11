@@ -120,7 +120,7 @@
   /* hero */
   .hero{position:relative;overflow:hidden;min-height:100vh;background:linear-gradient(135deg,#eef1f7 0%,#efeaf3 55%,#eef0f7 100%);padding:0}
   .hero-media{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
-  .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s var(--ease)}
+  .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity .6s var(--ease)}
   .hero-media video.on{opacity:1}
   .hero-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(46,54,120,.62) 0%,rgba(88,80,168,.5) 42%,rgba(150,140,200,.32) 78%,rgba(196,182,222,.2) 100%),radial-gradient(70% 90% at 18% 25%,rgba(96,120,214,.42) 0%,transparent 60%),radial-gradient(65% 85% at 82% 82%,rgba(170,140,214,.36) 0%,transparent 62%)}
   .hero-inner{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center}
@@ -428,7 +428,7 @@
 <!-- hero -->
 <section class="hero" id="inicio">
   <div class="hero-media" id="heroMedia">
-    <video muted playsinline loop preload="auto"></video>
+    <video muted playsinline loop preload="auto" poster="https://images.pexels.com/videos/7218434/adult-art-attractive-authentic-7218434.jpeg?auto=compress&cs=tinysrgb&w=1280"></video>
   </div>
   <div class="hero-scrim"></div>
   <div class="wrap hero-inner">
@@ -451,13 +451,13 @@
   var label=document.getElementById('hvLabel');
   var dots=document.querySelectorAll('#hvDots i');
   var clips=[
-    {s:'https://videos.pexels.com/video-files/7218434/7218434-hd_1920_1080_25fps.mp4',l:'Estilo'},
-    {s:'https://videos.pexels.com/video-files/8386980/8386980-uhd_2732_1440_25fps.mp4',l:'Consultoria'},
-    {s:'https://videos.pexels.com/video-files/5704937/5704937-uhd_2732_1440_24fps.mp4',l:'Guarda-roupa'}
+    {s:'https://videos.pexels.com/video-files/7218434/7218434-hd_1920_1080_25fps.mp4',l:'Estilo',p:'https://images.pexels.com/videos/7218434/adult-art-attractive-authentic-7218434.jpeg?auto=compress&cs=tinysrgb&w=1280'},
+    {s:'https://videos.pexels.com/video-files/8386980/8386980-uhd_2732_1440_25fps.mp4',l:'Consultoria',p:'https://images.pexels.com/videos/8386980/client-diversity-fashion-females-8386980.jpeg?auto=compress&cs=tinysrgb&w=1280'},
+    {s:'https://videos.pexels.com/video-files/5704937/5704937-uhd_2732_1440_24fps.mp4',l:'Guarda-roupa',p:'https://images.pexels.com/videos/5704937/adult-age-aging-black-friday-5704937.jpeg?auto=compress&cs=tinysrgb&w=1280'}
   ];
   var i=0;
   v.addEventListener('playing',function(){v.classList.add('on');});
-  function go(n){ v.classList.remove('on'); v.src=clips[n].s; v.load(); var pl=v.play(); if(pl&&pl.catch){pl.catch(function(){});} if(label)label.textContent=clips[n].l; dots.forEach(function(d,k){d.classList.toggle('on',k===n);}); }
+  function go(n){ if(clips[n].p){v.poster=clips[n].p;} v.src=clips[n].s; v.load(); var pl=v.play(); if(pl&&pl.catch){pl.catch(function(){});} if(label)label.textContent=clips[n].l; dots.forEach(function(d,k){d.classList.toggle('on',k===n);}); }
   go(0);
   setInterval(function(){ i=(i+1)%clips.length; go(i); },6000);
 })();
