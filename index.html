@@ -751,7 +751,7 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Karen Leão · Todos os direitos reservados</span>
+      <span>© 2026 Karen Leão · Todos os direitos reservados · <a href="/admin.html" style="color:inherit;opacity:.6;text-decoration:none">Área da Karen</a></span>
       <span class="r"><svg class="mk"><use href="#quatre"/></svg> Consultoria de imagem · Manaus, Brasil</span>
     </div>
   </div>
@@ -848,6 +848,43 @@
     lb.querySelectorAll("[data-lbclose]").forEach(el=>el.addEventListener("click",closeL));
     document.addEventListener("keydown",e=>{if(e.key==="Escape")closeL();});
   })();
+</script>
+<!-- Novidades da Karen (Supabase) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  var SB_URL="https://wpoeigoledhzyvomudgf.supabase.co";
+  var SB_KEY="sb_publishable_S4eWNjOtaiXTo5sr9Hek0A_42NzE4jf";
+  if(!window.supabase||!window.supabase.createClient)return;
+  var sb=window.supabase.createClient(SB_URL,SB_KEY);
+  var grid=document.querySelector("#artigos .art-grid");
+  var modal=document.getElementById("modal");
+  var content=document.getElementById("modal-content");
+  if(!grid||!modal||!content)return;
+  function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function paras(t){return esc(t).split(/\n\s*\n/).map(function(p){return "<p>"+p.replace(/\n/g,"<br>")+"</p>";}).join("");}
+  function fmtDate(iso){try{return new Date(iso).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});}catch(e){return "";}}
+  function openArt(a){
+    var img=a.image_url?('<div class="art-img" style="margin:0 0 28px"><div class="ph" style="background-image:url(\''+a.image_url+'\');padding-top:60%;background-size:cover;background-position:center"></div></div>'):'';
+    content.innerHTML='<span class="m-kick">'+esc(a.category||'Novidades')+(a.created_at?' &middot; '+fmtDate(a.created_at):'')+'</span><h2>'+esc(a.title)+'</h2>'+img+paras(a.body||a.excerpt||'');
+    modal.classList.add("open");document.body.classList.add("modal-open");
+    var box=modal.querySelector(".modal-box");if(box)box.scrollTop=0;
+  }
+  function card(a){
+    var el=document.createElement("article");
+    el.className="art reveal in";el.style.cursor="pointer";
+    var cover=a.cover_url?("background-image:url('"+a.cover_url+"')"):"background:linear-gradient(135deg,#e9ecf4,#d9d3c6)";
+    el.innerHTML='<div class="art-img"><div class="ph" style="'+cover+'"></div>'+(a.category?'<span class="art-tag">'+esc(a.category)+'</span>':'')+'</div><h3>'+esc(a.title)+'</h3><p>'+esc(a.excerpt||'')+'</p><span class="meta">Ler artigo →</span>';
+    el.addEventListener("click",function(){openArt(a);});
+    return el;
+  }
+  sb.from("karen_articles").select("*").eq("published",true).order("created_at",{ascending:false}).then(function(res){
+    if(res.error||!res.data||!res.data.length)return;
+    var frag=document.createDocumentFragment();
+    res.data.forEach(function(a){frag.appendChild(card(a));});
+    grid.insertBefore(frag,grid.firstChild);
+  });
+})();
 </script>
 </body>
 </html>
