@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Área da Karen · Painel</title>
+<meta name="robots" content="noindex,nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--accent:#d6a43f;--ink:#23262b;--ink-soft:#4d5560;--muted:#8b93a0;--cream:#f6f3ec;--line:#e7e3d9;--serif:'Fraunces',Georgia,serif;--sans:'Poppins',system-ui,sans-serif;--ok:#2e7d52;--bg:#faf8f3}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:15px;line-height:1.5}
+  a{color:var(--accent)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+  header.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+  header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:600;letter-spacing:.02em}
+  .brand .dot{width:26px;height:26px;border-radius:50%;background:var(--accent);display:inline-block}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:.02em;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:11px 20px;border-radius:2px;cursor:pointer;transition:.2s;text-decoration:none}
+  .btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn--ghost:hover{background:#fff;color:var(--ink);border-color:var(--ink)}
+  .btn--gold{background:var(--accent);border-color:var(--accent)}
+  .btn--sm{padding:7px 13px;font-size:12px}
+  .btn--danger{background:#fff;color:#b23b3b;border-color:#e7cccc}
+  .btn--danger:hover{background:#b23b3b;color:#fff;border-color:#b23b3b}
+  .card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:28px;margin:22px 0;box-shadow:0 10px 30px rgba(30,35,45,.04)}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;margin:0 0 6px}
+  h1{font-size:1.9rem}
+  h2{font-size:1.3rem}
+  .sub{color:var(--ink-soft);margin:0 0 20px}
+  label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:16px 0 7px}
+  input,textarea,select{width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:3px;padding:12px 14px;outline:none;transition:.2s}
+  input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(214,164,63,.12)}
+  textarea{min-height:200px;resize:vertical;line-height:1.6}
+  .row{display:flex;gap:16px;flex-wrap:wrap}
+  .row>div{flex:1;min-width:200px}
+  .muted{color:var(--muted);font-size:12.5px}
+  .msg{padding:12px 16px;border-radius:3px;font-size:14px;margin:14px 0;display:none}
+  .msg.err{background:#fcecec;color:#a23636;display:block}
+  .msg.ok{background:#e9f6ef;color:#2e7d52;display:block}
+  .hide{display:none!important}
+  .center{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:30px 0}
+  .login-box{width:100%;max-width:420px}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .spacer{flex:1}
+  .art-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .art-row:last-child{border-bottom:none}
+  .thumb{width:58px;height:44px;border-radius:3px;background:#eee var(--c) center/cover;flex:none}
+  .art-row .info{flex:1;min-width:0}
+  .art-row .info b{font-family:var(--serif);font-weight:600;font-size:15px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pill{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:30px;font-weight:500}
+  .pill.pub{background:#e9f6ef;color:#2e7d52}
+  .pill.draft{background:#f1efe8;color:#8b7a45}
+  .filepreview{margin-top:8px;height:120px;border-radius:3px;background:#f1efe8 var(--c) center/cover;border:1px dashed var(--line);display:none}
+  .filepreview.show{display:block}
+  details.setup{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+  details.setup summary{cursor:pointer;color:var(--muted);font-size:13px}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:6px}
+  footer.ft{text-align:center;color:var(--muted);font-size:12px;padding:30px 0}
+  @media(max-width:560px){.card{padding:20px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <span class="brand"><span class="dot"></span> Área da Karen</span>
+  <button id="logoutBtn" class="btn btn--ghost btn--sm hide">Sair</button>
+</div></header>
+
+<!-- LOGIN -->
+<section id="loginView" class="center"><div class="wrap login-box">
+  <div class="card">
+    <h1>Entrar</h1>
+    <p class="sub">Acesso ao painel de artigos do site.</p>
+    <div id="loginMsg" class="msg"></div>
+    <form id="loginForm">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" autocomplete="username" placeholder="seu@email.com" required>
+      <label for="pass">Senha</label>
+      <input id="pass" type="password" autocomplete="current-password" placeholder="••••••••" required>
+      <div style="height:18px"></div>
+      <button class="btn btn--gold" style="width:100%" type="submit">Entrar</button>
+    </form>
+    <details class="setup">
+      <summary>Primeiro acesso / criar senha</summary>
+      <p class="hint">Use isto uma vez para criar o acesso da Karen (ou redefinir a senha). Você precisa do <b>código de setup</b> que a Joice tem.</p>
+      <div id="setupMsg" class="msg"></div>
+      <label for="suEmail">E-mail do acesso</label>
+      <input id="suEmail" type="email" placeholder="contato@karenleao.com.br">
+      <label for="suPass">Nova senha (mín. 8 caracteres)</label>
+      <input id="suPass" type="password" placeholder="crie uma senha">
+      <label for="suToken">Código de setup</label>
+      <input id="suToken" type="text" placeholder="código fornecido pela Joice">
+      <div style="height:14px"></div>
+      <button id="setupBtn" class="btn btn--ghost" style="width:100%" type="button">Criar / redefinir acesso</button>
+    </details>
+  </div>
+  <footer class="ft">Karen Leão · painel de conteúdo</footer>
+</div></section>
+
+<!-- APP -->
+<section id="appView" class="hide"><div class="wrap">
+
+  <!-- EDITOR -->
+  <div class="card">
+    <div class="toolbar" style="margin-bottom:6px">
+      <h2 id="editorTitle" style="margin:0">Novo artigo</h2>
+      <div class="spacer"></div>
+      <button id="newBtn" class="btn btn--ghost btn--sm">+ Novo</button>
+    </div>
+    <p class="sub">Escreva, adicione as fotos e publique. O artigo aparece na seção <b>Artigos</b> do site.</p>
+    <div id="editorMsg" class="msg"></div>
+    <form id="articleForm">
+      <input type="hidden" id="artId">
+      <label for="title">Título</label>
+      <input id="title" type="text" placeholder="Título do artigo" required>
+      <div class="row">
+        <div>
+          <label for="category">Categoria</label>
+          <input id="category" type="text" placeholder="Ex.: Moda, Estilo, Comportamento">
+        </div>
+        <div>
+          <label for="published">Situação</label>
+          <select id="published">
+            <option value="true">Publicado (aparece no site)</option>
+            <option value="false">Rascunho (só você vê)</option>
+          </select>
+        </div>
+      </div>
+      <label for="excerpt">Resumo curto <span class="muted">(aparece no card)</span></label>
+      <input id="excerpt" type="text" placeholder="Uma frase que convida a ler">
+      <label for="body">Texto do artigo</label>
+      <textarea id="body" placeholder="Escreva aqui. Deixe uma linha em branco entre os parágrafos."></textarea>
+
+      <div class="row">
+        <div>
+          <label for="cover">Foto de capa <span class="muted">(card)</span></label>
+          <input id="cover" type="file" accept="image/*">
+          <div id="coverPrev" class="filepreview"></div>
+        </div>
+        <div>
+          <label for="image">Foto dentro do artigo</label>
+          <input id="image" type="file" accept="image/*">
+          <div id="imagePrev" class="filepreview"></div>
+        </div>
+      </div>
+
+      <div style="height:22px"></div>
+      <div class="toolbar">
+        <button id="saveBtn" class="btn btn--gold" type="submit">Salvar e publicar</button>
+        <button id="cancelEdit" class="btn btn--ghost hide" type="button">Cancelar edição</button>
+        <div class="spacer"></div>
+        <a href="/" target="_blank" class="btn btn--ghost btn--sm">Ver site ↗</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- LIST -->
+  <div class="card">
+    <h2>Seus artigos</h2>
+    <p class="sub" id="listSub">Carregando…</p>
+    <div id="artList"></div>
+  </div>
+
+  <!-- ACCOUNT -->
+  <div class="card">
+    <h2>Minha conta</h2>
+    <p class="sub">Logada como <b id="whoami"></b>.</p>
+    <div id="pwMsg" class="msg"></div>
+    <div class="row" style="align-items:flex-end">
+      <div>
+        <label for="newPw">Trocar minha senha</label>
+        <input id="newPw" type="password" placeholder="nova senha (mín. 8)">
+      </div>
+      <div style="flex:none">
+        <button id="pwBtn" class="btn btn--ghost" type="button">Salvar senha</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="ft">Karen Leão · painel de conteúdo</footer>
+</div></section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function(){
+  var SB_URL="https://wpoeigoledhzyvomudgf.supabase.co";
+  var SB_KEY="sb_publishable_S4eWNjOtaiXTo5sr9Hek0A_42NzE4jf";
+  var FN_SETUP=SB_URL+"/functions/v1/karen-setup";
+  var sb=window.supabase.createClient(SB_URL,SB_KEY);
+
+  var $=function(id){return document.getElementById(id);};
+  function show(el,type,text){el.className="msg "+type;el.textContent=text;}
+  function clear(el){el.className="msg";el.textContent="";}
+
+  // ---------- AUTH ----------
+  async function refresh(){
+    var s=(await sb.auth.getSession()).data.session;
+    if(s){ await enterApp(s); } else { $("loginView").classList.remove("hide"); $("appView").classList.add("hide"); $("logoutBtn").classList.add("hide"); }
+  }
+  async function enterApp(session){
+    // confirma que é autor autorizado
+    var ok=false;
+    try{ var r=await sb.rpc("karen_is_author"); ok=(r.data===true); }catch(e){ ok=false; }
+    if(!ok){
+      show($("loginMsg"),"err","Este e-mail não tem permissão de publicar. Fale com a Joice.");
+      await sb.auth.signOut();
+      $("loginView").classList.remove("hide"); $("appView").classList.add("hide"); $("logoutBtn").classList.add("hide");
+      return;
+    }
+    $("whoami").textContent=session.user.email;
+    $("loginView").classList.add("hide"); $("appView").classList.remove("hide"); $("logoutBtn").classList.remove("hide");
+    clear($("loginMsg"));
+    loadList();
+  }
+  $("loginForm").addEventListener("submit",async function(e){
+    e.preventDefault(); clear($("loginMsg"));
+    var btn=e.submitter; if(btn){btn.disabled=true;btn.textContent="Entrando…";}
+    var r=await sb.auth.signInWithPassword({email:$("email").value.trim().toLowerCase(),password:$("pass").value});
+    if(btn){btn.disabled=false;btn.textContent="Entrar";}
+    if(r.error){ show($("loginMsg"),"err","E-mail ou senha incorretos."); return; }
+    refresh();
+  });
+  $("logoutBtn").addEventListener("click",async function(){ await sb.auth.signOut(); location.reload(); });
+
+  // ---------- SETUP (primeiro acesso) ----------
+  $("setupBtn").addEventListener("click",async function(){
+    clear($("setupMsg"));
+    var email=$("suEmail").value.trim().toLowerCase(), pass=$("suPass").value, token=$("suToken").value.trim();
+    if(!email||pass.length<8||!token){ show($("setupMsg"),"err","Preencha e-mail, senha (mín. 8) e código."); return; }
+    this.disabled=true; this.textContent="Criando…";
+    try{
+      var res=await fetch(FN_SETUP,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+SB_KEY,"apikey":SB_KEY},body:JSON.stringify({setup_token:token,email:email,password:pass})});
+      var j=await res.json();
+      if(!res.ok||j.error){ show($("setupMsg"),"err",j.error||"Não foi possível criar o acesso."); }
+      else{ show($("setupMsg"),"ok","Acesso criado! Agora é só entrar acima com esse e-mail e senha."); $("email").value=email; }
+    }catch(err){ show($("setupMsg"),"err","Erro de conexão. Tente de novo."); }
+    this.disabled=false; this.textContent="Criar / redefinir acesso";
+  });
+
+  // ---------- IMAGE UPLOAD ----------
+  function bindPreview(inputId,prevId){
+    $(inputId).addEventListener("change",function(){
+      var f=this.files&&this.files[0], p=$(prevId);
+      if(f){ p.style.setProperty("--c","url('"+URL.createObjectURL(f)+"')"); p.classList.add("show"); }
+      else { p.classList.remove("show"); }
+    });
+  }
+  bindPreview("cover","coverPrev"); bindPreview("image","imagePrev");
+  async function uploadImg(file){
+    if(!file) return "";
+    var ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
+    var path="art/"+Date.now()+"-"+Math.random().toString(36).slice(2,8)+"."+ext;
+    var up=await sb.storage.from("karen-articles").upload(path,file,{contentType:file.type||"image/jpeg",upsert:false});
+    if(up.error) throw up.error;
+    return sb.storage.from("karen-articles").getPublicUrl(path).data.publicUrl;
+  }
+  function slugify(t){
+    return (t||"artigo").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
+      .replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"").slice(0,54)+"-"+Date.now().toString(36);
+  }
+
+  // ---------- EDITOR ----------
+  var editingSlug=null;
+  function resetForm(){
+    editingSlug=null;
+    $("artId").value=""; $("title").value=""; $("category").value=""; $("excerpt").value=""; $("body").value="";
+    $("cover").value=""; $("image").value=""; $("coverPrev").classList.remove("show"); $("imagePrev").classList.remove("show");
+    $("published").value="true";
+    $("editorTitle").textContent="Novo artigo"; $("saveBtn").textContent="Salvar e publicar";
+    $("cancelEdit").classList.add("hide"); clear($("editorMsg"));
+  }
+  $("newBtn").addEventListener("click",function(){ resetForm(); window.scrollTo({top:0,behavior:"smooth"}); });
+  $("cancelEdit").addEventListener("click",resetForm);
+  $("published").addEventListener("change",function(){ $("saveBtn").textContent=this.value==="true"?"Salvar e publicar":"Salvar rascunho"; });
+
+  $("articleForm").addEventListener("submit",async function(e){
+    e.preventDefault(); clear($("editorMsg"));
+    var title=$("title").value.trim();
+    if(!title){ show($("editorMsg"),"err","Coloque um título."); return; }
+    var btn=$("saveBtn"); btn.disabled=true; var old=btn.textContent; btn.textContent="Salvando…";
+    try{
+      var coverUrl=await uploadImg($("cover").files[0]);
+      var imageUrl=await uploadImg($("image").files[0]);
+      var row={
+        title:title, category:$("category").value.trim(), excerpt:$("excerpt").value.trim(),
+        body:$("body").value, published:$("published").value==="true"
+      };
+      if(coverUrl) row.cover_url=coverUrl;
+      if(imageUrl) row.image_url=imageUrl;
+      var res;
+      if(editingSlug){ res=await sb.from("karen_articles").update(row).eq("slug",editingSlug).select(); }
+      else { row.slug=slugify(title); res=await sb.from("karen_articles").insert(row).select(); }
+      if(res.error) throw res.error;
+      show($("editorMsg"),"ok", row.published?"Artigo publicado! Já aparece no site.":"Rascunho salvo.");
+      resetForm(); loadList();
+    }catch(err){ show($("editorMsg"),"err","Erro ao salvar: "+(err.message||err)); }
+    btn.disabled=false; btn.textContent=old;
+  });
+
+  // ---------- LIST ----------
+  async function loadList(){
+    var res=await sb.from("karen_articles").select("*").order("created_at",{ascending:false});
+    var box=$("artList");
+    if(res.error){ $("listSub").textContent="Não foi possível carregar."; return; }
+    var rows=res.data||[];
+    $("listSub").textContent=rows.length?(rows.length+" artigo(s).") : "Nenhum artigo ainda. Crie o primeiro acima!";
+    box.innerHTML="";
+    rows.forEach(function(a){
+      var div=document.createElement("div"); div.className="art-row";
+      var c=a.cover_url?("url('"+a.cover_url+"')"):"linear-gradient(135deg,#e9ecf4,#d9d3c6)";
+      div.innerHTML=
+        '<div class="thumb" style="--c:'+c+'"></div>'+
+        '<div class="info"><b>'+escapeHtml(a.title)+'</b>'+
+        '<span class="pill '+(a.published?"pub":"draft")+'">'+(a.published?"Publicado":"Rascunho")+'</span> '+
+        '<span class="muted">'+fmtDate(a.created_at)+(a.category?" · "+escapeHtml(a.category):"")+'</span></div>';
+      var actions=document.createElement("div"); actions.style.display="flex"; actions.style.gap="8px"; actions.style.flexWrap="wrap";
+      var ed=mkBtn("Editar","btn btn--ghost btn--sm",function(){ loadIntoForm(a); });
+      var tg=mkBtn(a.published?"Despublicar":"Publicar","btn btn--ghost btn--sm",async function(){
+        await sb.from("karen_articles").update({published:!a.published}).eq("slug",a.slug); loadList();
+      });
+      var del=mkBtn("Excluir","btn btn--danger btn--sm",async function(){
+        if(!confirm("Excluir \""+a.title+"\"? Isso não tem como desfazer.")) return;
+        await sb.from("karen_articles").delete().eq("slug",a.slug); loadList();
+      });
+      actions.appendChild(ed); actions.appendChild(tg); actions.appendChild(del);
+      div.appendChild(actions); box.appendChild(div);
+    });
+  }
+  function loadIntoForm(a){
+    editingSlug=a.slug;
+    $("artId").value=a.slug; $("title").value=a.title||""; $("category").value=a.category||"";
+    $("excerpt").value=a.excerpt||""; $("body").value=a.body||""; $("published").value=a.published?"true":"false";
+    $("cover").value=""; $("image").value="";
+    var cp=$("coverPrev"); if(a.cover_url){cp.style.setProperty("--c","url('"+a.cover_url+"')");cp.classList.add("show");}else cp.classList.remove("show");
+    var ip=$("imagePrev"); if(a.image_url){ip.style.setProperty("--c","url('"+a.image_url+"')");ip.classList.add("show");}else ip.classList.remove("show");
+    $("editorTitle").textContent="Editando artigo"; $("saveBtn").textContent=a.published?"Salvar e publicar":"Salvar rascunho";
+    $("cancelEdit").classList.remove("hide"); clear($("editorMsg"));
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function mkBtn(label,cls,fn){var b=document.createElement("button");b.type="button";b.className=cls;b.textContent=label;b.addEventListener("click",fn);return b;}
+
+  // ---------- PASSWORD ----------
+  $("pwBtn").addEventListener("click",async function(){
+    clear($("pwMsg")); var p=$("newPw").value;
+    if(p.length<8){ show($("pwMsg"),"err","A senha precisa ter pelo menos 8 caracteres."); return; }
+    this.disabled=true;
+    var r=await sb.auth.updateUser({password:p});
+    this.disabled=false;
+    if(r.error){ show($("pwMsg"),"err",r.error.message); } else { show($("pwMsg"),"ok","Senha atualizada!"); $("newPw").value=""; }
+  });
+
+  // ---------- helpers ----------
+  function escapeHtml(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function fmtDate(iso){try{return new Date(iso).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});}catch(e){return "";}}
+
+  refresh();
+})();
+</script>
+</body>
+</html>
