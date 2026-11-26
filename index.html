@@ -134,9 +134,9 @@
 
   /* hero */
   .hero{position:relative;overflow:hidden;min-height:100vh;background:linear-gradient(135deg,#eef1f7 0%,#efeaf3 55%,#eef0f7 100%);padding:0}
-  .hero-media{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
-  .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity .6s var(--ease)}
-  .hero-media video.on{opacity:1}
+  .hero-media{position:absolute;inset:0;z-index:0;background:#2e3678 center/cover}
+  .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease}
+  .hero-media video.is-on{opacity:1}
   .hero-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(46,54,120,.62) 0%,rgba(88,80,168,.5) 42%,rgba(150,140,200,.32) 78%,rgba(196,182,222,.2) 100%),radial-gradient(70% 90% at 18% 25%,rgba(96,120,214,.42) 0%,transparent 60%),radial-gradient(65% 85% at 82% 82%,rgba(170,140,214,.36) 0%,transparent 62%)}
   .hero-inner{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center}
   .hero-text{max-width:640px;padding:120px 0}
@@ -463,7 +463,8 @@
 <!-- hero -->
 <section class="hero" id="inicio">
   <div class="hero-media" id="heroMedia">
-    <video muted playsinline loop preload="auto" poster="https://images.pexels.com/videos/8386980/client-diversity-fashion-females-8386980.jpeg?auto=compress&cs=tinysrgb&w=1280"></video>
+    <video class="hv-vid" muted playsinline loop preload="auto" poster="https://images.pexels.com/videos/8386980/client-diversity-fashion-females-8386980.jpeg?auto=compress&cs=tinysrgb&w=1280"></video>
+    <video class="hv-vid" muted playsinline loop preload="auto"></video>
   </div>
   <div class="hero-scrim"></div>
   <div class="wrap hero-inner">
@@ -482,7 +483,8 @@
 </section>
 <script>
 (function(){
-  var v=document.querySelector('#heroMedia video'); if(!v)return;
+  var media=document.getElementById('heroMedia'); if(!media)return;
+  var vids=media.querySelectorAll('video'); if(vids.length<2)return;
   var label=document.getElementById('hvLabel');
   var dots=document.querySelectorAll('#hvDots i');
   var clips=[
@@ -490,11 +492,27 @@
     {s:'https://videos.pexels.com/video-files/7218434/7218434-hd_1920_1080_25fps.mp4',l:'Estilo',p:'https://images.pexels.com/videos/7218434/adult-art-attractive-authentic-7218434.jpeg?auto=compress&cs=tinysrgb&w=1280'},
     {s:'https://videos.pexels.com/video-files/8432031/8432031-uhd_1440_2732_25fps.mp4',l:'Autoestima',p:'https://images.pexels.com/videos/8432031/pexels-photo-8432031.jpeg?auto=compress&cs=tinysrgb&w=1280'}
   ];
-  var i=0;
-  v.addEventListener('playing',function(){v.classList.add('on');});
-  function go(n){ if(clips[n].p){v.poster=clips[n].p;} v.src=clips[n].s; v.load(); var pl=v.play(); if(pl&&pl.catch){pl.catch(function(){});} if(label)label.textContent=clips[n].l; dots.forEach(function(d,k){d.classList.toggle('on',k===n);}); }
-  go(0);
-  setInterval(function(){ i=(i+1)%clips.length; go(i); },6000);
+  var cur=0, i=0;
+  function meta(n){ if(label)label.textContent=clips[n].l; dots.forEach(function(d,k){d.classList.toggle('on',k===n);}); }
+  function load(el,n,then){
+    el.src=clips[n].s; el.load();
+    var ready=function(){ el.removeEventListener('canplay',ready); var p=el.play(); if(p&&p.catch)p.catch(function(){}); if(then)then(); };
+    el.addEventListener('canplay',ready);
+  }
+  load(vids[0],0,function(){ vids[0].classList.add('is-on'); });
+  meta(0);
+  function next(){
+    i=(i+1)%clips.length;
+    var active=vids[cur], hidden=vids[cur^1];
+    load(hidden,i,function(){
+      hidden.classList.add('is-on');
+      active.classList.remove('is-on');
+      cur=cur^1;
+      setTimeout(function(){ try{active.pause();}catch(e){} },1200);
+    });
+    meta(i);
+  }
+  setInterval(next,6000);
 })();
 </script>
 
