@@ -160,7 +160,7 @@
   /* feature strip */
   .strip{border-bottom:1px solid var(--line)}
   .strip .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-  .feat{padding:52px 34px;text-align:center;border-right:1px solid var(--line)}
+  .feat{padding:52px 34px;text-align:center;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;align-items:center}
   .feat:last-child{border-right:none}
   .feat h3{font-size:1.5rem;font-weight:600;margin-bottom:14px}
   .feat span{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
@@ -275,7 +275,7 @@
     .about-text{padding-left:52px}
   }
   @media(max-width:900px){
-    .wrap{padding:0 26px}
+    .wrap{padding-left:26px;padding-right:26px}
     .menu,.nav-right .ig,.nav-right .pill{display:none}
     .burger{display:flex}
     .hero{min-height:94vh}
@@ -283,10 +283,12 @@
     .hero-text{padding:92px 0 0;max-width:100%}
     .hero-scrim{background:linear-gradient(180deg,rgba(46,54,120,.55) 0%,rgba(88,80,168,.42) 40%,rgba(150,140,200,.3) 72%,rgba(70,64,140,.5) 100%),radial-gradient(85% 55% at 20% 22%,rgba(96,120,214,.4) 0%,transparent 60%),radial-gradient(85% 50% at 80% 82%,rgba(170,140,214,.36) 0%,transparent 60%)}
     .hero-badges{right:20px;bottom:18px}
-    .hero-text{padding:46px 0 0;max-width:none}
+    .nav{padding-top:44px;padding-bottom:18px}
+    .hero-text{padding:118px 0 0;max-width:none}
     .strip .wrap{grid-template-columns:repeat(2,1fr)}
-    .feat{border-bottom:1px solid var(--line)}
+    .feat{border-bottom:1px solid var(--line);min-height:168px}
     .feat:nth-child(2n){border-right:none}
+    .feat:nth-child(3),.feat:nth-child(4){border-bottom:none}
     section{padding:78px 0}
     .svc-grid{grid-template-columns:1fr 1fr}
     .about-grid{grid-template-columns:1fr}
@@ -299,7 +301,7 @@
     .foot-grid{grid-template-columns:1fr 1fr;gap:36px}
   }
   @media(max-width:560px){
-    .wrap{padding:0 20px}
+    .wrap{padding-left:20px;padding-right:20px}
     .topbar{font-size:10px;letter-spacing:.2em}
     .brand .word{font-size:16px;letter-spacing:.24em}
     .svc-grid,.art-grid{grid-template-columns:1fr}
